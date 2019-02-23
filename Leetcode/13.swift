@@ -33,31 +33,38 @@ class Solution {
         ]
     }
     
+    // same solution represented with functional programming
     func romanToInt(_ s: String) -> Int {
         var charCounter = RomanResource.greatestCharacter
         var intCounter = 0
         s.forEach { char in
-            if RomanResource.romanDict[char]! > RomanResource.romanDict[charCounter]! {
-                intCounter = intCounter - 2*RomanResource.romanDict[charCounter]! + RomanResource.romanDict[char]!
-            }else {
-                intCounter += RomanResource.romanDict[char]!
+            // if the current is smaller than previous
+            let current = RomanResource.romanDict[char]!
+            let previous = RomanResource.romanDict[charCounter]!
+            
+            if current > previous {
+                intCounter = intCounter - 2 * previous + current
+            } else {
+                intCounter += current
                 charCounter = char
             }
         }
         return intCounter
     }
     
-    // same solution represented with functional programming
-    func romanToInt2(_ s: String) -> Int {
+    func romanToInt1(_ s: String) -> Int {
         var charCounter = RomanResource.greatestCharacter
         var intCounter = 0
         
         return s.reduce(0) {
-            if RomanResource.romanDict[$1]! > RomanResource.romanDict[charCounter]! {
-                return $0 - 2*RomanResource.romanDict[charCounter]! + RomanResource.romanDict[$1]!
+            let current = RomanResource.romanDict[$1]!
+            let previous = RomanResource.romanDict[charCounter]!
+            
+            if current > previous {
+                return $0 - 2 * previous + current
             } else {
                 charCounter = $1
-                return $0 + RomanResource.romanDict[$1]!
+                return $0 + current
             }
         }
     }
